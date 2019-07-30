@@ -1,0 +1,6 @@
+development:
+  adapter: mysql2
+  database: summer
+  username: uchiyama
+  password: password
+  encoding: utf8
