@@ -1,8 +1,16 @@
 <h1>ユーザー一覧</h1>
+<p>
+  <a href="/">
+  トップページへ
+  </a>
+</p>
+
 <ul>
-  <% @users.each do |user| %>
+  <% @user.each do |user| %>
     <li>
+      <a href="/<%= user.id %>">
       <%= user.name%>
+      </a>
     </li>
   <% end %>
 </ul>

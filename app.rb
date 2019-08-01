@@ -22,12 +22,17 @@ post '/sign_up' do
   }
   user = User.new(sign_up_params)
   user.save
-  redirect 'users'
+  redirect '/users'
 end
 
 get '/users' do
   @user = User.all
   erb :users
+end
+
+get '/:id' do
+  @user = User.find(params[:id])
+  erb :user
 end
 
 configure do
