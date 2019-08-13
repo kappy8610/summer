@@ -1,0 +1,14 @@
+<h1>出席表一覧</h1>
+
+<a href="/"><p>トップページへ</p></a>
+
+<ul>
+  <% @attendance.each do |attendance|%>
+    <li>
+      <%= attendance.name%>
+      <form action="/<%= attendance.id %>/join" method="post">
+        <input type="submit" value="参加">
+      </form>
+    </li>
+  <% end %>
+</ul>

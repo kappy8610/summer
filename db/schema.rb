@@ -10,12 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_103001) do
+ActiveRecord::Schema.define(version: 2019_08_06_063051) do
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "password", default: "", null: false
+  end
+
+  create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.boolean "is_attendance", default: false, null: false
+    t.boolean "is_attendance_contact", default: false, null: false
+  end
+
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "attendance_id"
+    t.bigint "belong_id"
+    t.string "name", default: "", null: false
+    t.string "email", default: "", null: false
+    t.string "password", default: "", null: false
+    t.boolean "is_attendance", default: false, null: false
+    t.integer "attendance_num", default: 0, null: false
+    t.integer "absent_num", default: 0, null: false
+    t.integer "sabotage_num", default: 0, null: false
+    t.index ["attendance_id"], name: "index_users_on_attendance_id"
+    t.index ["belong_id"], name: "index_users_on_belong_id"
   end
 
 end
