@@ -2,6 +2,8 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/activerecord'
 
+require "time"
+
 require './models/absent.rb'
 require './models/admin.rb'
 require './models/attendance.rb'
@@ -16,19 +18,27 @@ get '/' do
   erb :index
 end
 
-# ログインページ
-get '/login' do
-  erb :login
-end
-
 # 新規登録ページ
 get '/sign_up' do
   erb :sign_up
 end
 
-# 新規出席表作成ページ
-get '/new' do
-  erb :new
+# ログインページ
+get '/login' do
+  erb :login
+end
+
+# 出席確認ページ
+get '/table' do
+  @user = User.all
+  @day = Time.new
+  erb :table
+end
+
+# 欠席連絡確認ページ
+get '/chack_absent' do
+  @absent = Absent.all
+  erb :chack_absent
 end
 
 # 新規出席表制作処理
@@ -67,13 +77,36 @@ end
 
 # ユーザー一覧ページ
 get '/users' do
+  @day = Time.new
+  @last_login_day = @day
   @user = User.all
   erb :users
+end
+
+# 欠席連絡
+get '/:id/absent' do
+  @user = User.find(params[:id])
+  erb :absent
+end
+
+# 新規欠席連絡
+post '/:id/new_absent' do
+  @user = User.find(params[:id])
+  absent_params = {
+    name: params[:name],
+    when: params[:when],
+    reason: params[:reason]
+  }
+  absent = Absent.new(absent_params)
+  absent.save
+  redirect '/'
 end
 
 # 各ユーザーの情報ページ
 get '/:id' do
   @user = User.find(params[:id])
+  @day = Time.new
+  @last_login_day = @day.day
   erb :user
 end
 
@@ -81,19 +114,10 @@ end
 post '/:id' do
   @user = User.find(params[:id])
   @user.is_attendance = true
+  @user.attendance_num += 1
   @user.save
+  @day = Time.new
   erb :user
-end
-
-# 出席表一覧
-get '/:id/join' do
-  @attendance = Attendance.all
-  erb :join
-end
-
-# 出席表への参加処理
-post '/:id/join' do
-  @user.attendance = Attendance.find(params[:name])
 end
 
 configure do

@@ -1,0 +1,16 @@
+<h1>欠席連絡</h1>
+
+<form action="/<%= @user.id%>/new_absent" method="post">
+  <p>欠席者</p>
+  <input type="text" name="name" value=<%= @user.name%> />
+
+  <p>欠席日</p>
+  <input type="text" name="when" />
+
+  <p>理由</p>
+  <input type="text" name="reason" />
+
+  <p>
+    <input type="submit" value="申請" />
+  </p>
+</form>

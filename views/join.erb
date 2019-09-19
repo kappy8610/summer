@@ -7,6 +7,7 @@
     <li>
       <%= attendance.name%>
       <form action="/<%= attendance.id %>/join" method="post">
+        <% @user = User.find(params[:id] )%>
         <input type="submit" value="参加">
       </form>
     </li>

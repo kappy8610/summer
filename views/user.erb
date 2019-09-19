@@ -11,11 +11,11 @@
 </p>
 
 <form action="/<%= @user.id %>" method="POST">
-  <input type="submit" value="主席申請">
+  <input type="submit" value="主席申請" id="button1">
 </form>
 
 <h2>出席登録</h2>
-<p>本日の欠席の有無</p>
+<p><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日の欠席の有無</p>
 <p>
   <% if !@user.is_attendance%>
     <p>欠席</p>
@@ -25,7 +25,10 @@
   <% end %>
 </p>
 
-<h2>参加</h2>
-<a href="/<%= @user.id %>/join">
-  <p>出席表一覧へ</p>
+<h2>合計出席回数</h2>
+<p><%= @user.attendance_num%></p>
+
+<h2>欠席連絡</h2>
+<a href="/<%= @user.id %>/absent">
+  <p>新規作成</p>
 </a>

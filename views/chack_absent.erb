@@ -1,0 +1,22 @@
+<h1>欠席連絡</h1>
+<a href="/">
+  <p>
+    トップページへ
+  </p>
+</a>
+
+<table>
+<% @absent.each do |absent| %>
+  <tr>
+    <th>
+      <%= absent.name%>
+    </th>
+    <td>
+      <%= absent.when%>
+    </td>
+    <td>
+      <%= absent.reason%>
+    </td>
+  </tr>
+<% end %>
+</table>
