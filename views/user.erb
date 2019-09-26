@@ -1,34 +1,54 @@
-<h1><%= @user.name%>の情報</h1>
-<a href="/">トップページ</a> ＜ <a href="/users">ユーザー一覧</a>
-<p>ユーザーネーム</p>
-<p>
-  <%= @user.name%>
-</p>
+<nav aria-label="breadcrumb"　>
+  <ol class="breadcrumb"　>
+    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
+    <li class="breadcrumb-item"><a href="/users">ユーザー一覧</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @user.name%></a></li>
+  </ol>
+</nav>
 
-<p>メール</p>
-<p>
-  <%= @user.email%>
-</p>
+<div class="main">
+  <div class="card lefts" style="width: 29rem;">
+    <div class="card-body">
+      <h2 class="card-title">出席申請</h2>
+      <form action="/<%= @user.id %>" method="POST" />
+        <input type="submit" value="主席申請" class="btn btn-primary" />
+      </form>
 
-<form action="/<%= @user.id %>" method="POST">
-  <input type="submit" value="主席申請" id="button1">
-</form>
+      <p class="card-text"><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日：
+        <% if !@user.is_attendance%>
+          欠席</p>
+        <% end %>
+        <% if @user.is_attendance%>
+          出席</p>
+        <% end %>
 
-<h2>出席登録</h2>
-<p><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日の欠席の有無</p>
-<p>
-  <% if !@user.is_attendance%>
-    <p>欠席</p>
-  <% end %>
-  <% if @user.is_attendance%>
-    <p>出席</p>
-  <% end %>
-</p>
+      <p class="card-text">合計出席回数：<%= @user.attendance_num%></p>
+    </div>
+  </div>
 
-<h2>合計出席回数</h2>
-<p><%= @user.attendance_num%></p>
+  <div class="card rights" style="width: 29rem;">
+    <div class="card-body">
+      <h2 class="card-title">欠席連絡</h2>
+        <p class="card-text">
+          <a href="/<%= @user.id %>/absent" class="card-link text-primary">
+            新規作成
+          </a>
+        </p>
+    </div>
+  </div>  
 
-<h2>欠席連絡</h2>
-<a href="/<%= @user.id %>/absent">
-  <p>新規作成</p>
-</a>
+  <div class="card rights" style="width: 29rem;">
+    <div class="card-body">
+      <h2 class="card-title">編集</h2>
+      <p class="card-text">
+        <a href="/<%= @user.id %>/edit" class="card-link text-primary">
+          編集ページへ
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <%# <div class="email"> %>
+    <%# <p>メールアドレス：<%= @user.email</p> %>
+  <%# </div> %>
+</div>

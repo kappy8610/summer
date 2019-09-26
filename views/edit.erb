@@ -1,0 +1,29 @@
+<nav aria-label="breadcrumb"　>
+  <ol class="breadcrumb"　>
+    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
+    <li class="breadcrumb-item"><a href="/users">ユーザー一覧</a></li>
+    <li class="breadcrumb-item"><a href="/<%= @user.id%>"><%= @user.name%></a></li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @user.name%>の編集</li>
+  </ol>
+</nav>
+
+<div class="main">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <form action="/<%= @user.id %>/edit" method="POST">
+          <p class="edit">ユーザーネーム</p class="edit">
+          <input class="form-control" type="text" name="name" value=<%= @user.name %> />
+
+          <p class="edit">メール</p class="edit">
+          <input class="form-control" type="email" name="email" value=<%= @user.email %> />
+
+          <p class="edit">パスワード</p class="edit">
+          <input class="form-control" type="password" name="password" value=<%= @user.password %> />
+          
+          <input class="btn btn-primary" type="submit" value="更新" />
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,34 +15,40 @@ enable :method_override
 
 # トップページ
 get '/' do
+  @title = "トップページ"
   erb :index
 end
 
 # 新規登録ページ
 get '/sign_up' do
+  @title = "新規登録"
   erb :sign_up
 end
 
 # ログインページ
 get '/login' do
+  @title = "ログイン"
   erb :login
 end
 
 # 出席確認ページ
 get '/table' do
-  @user = User.all
   @day = Time.new
+  @title = "#{@day.year}年#{@day.month}月#{@day.day}日の主席確認"
+  @user = User.all
   erb :table
 end
 
 # 欠席連絡確認ページ
 get '/chack_absent' do
+  @title = "欠席連絡一覧"
   @absent = Absent.all
   erb :chack_absent
 end
 
 # 新規出席表制作処理
 post '/new_attendance' do
+  @title = "トップページ"
   new_attendance_params = {
     name: params[:name]
   }
@@ -65,6 +71,7 @@ end
 
 # 管理者の新規登録処理
 post '/sign_up_admin' do
+  @title = "ユーザー一覧"
   sign_up_admin_params = {
     name: params[:name],
     email: params[:email],
@@ -77,20 +84,23 @@ end
 
 # ユーザー一覧ページ
 get '/users' do
+  @title = "ユーザー一覧"
   @day = Time.new
   @last_login_day = @day
   @user = User.all
   erb :users
 end
 
-# 欠席連絡
+# 欠席申請
 get '/:id/absent' do
+  @title = "欠席申請"
   @user = User.find(params[:id])
   erb :absent
 end
 
 # 新規欠席連絡
 post '/:id/new_absent' do
+  @title = "トップページ"
   @user = User.find(params[:id])
   absent_params = {
     name: params[:name],
@@ -105,8 +115,8 @@ end
 # 各ユーザーの情報ページ
 get '/:id' do
   @user = User.find(params[:id])
+  @title = "ユーザー情報"
   @day = Time.new
-  @last_login_day = @day.day
   erb :user
 end
 
@@ -117,7 +127,28 @@ post '/:id' do
   @user.attendance_num += 1
   @user.save
   @day = Time.new
+  @title = "ユーザー情報"
   erb :user
+end
+
+# 各ユーザーの編集ページ
+get '/:id/edit' do
+  @user = User.find(params[:id])
+  @title = "ユーザー情報の編集"
+  erb :edit
+end
+
+# 各ユーザーの編集処理
+post '/:id/edit' do
+  edit_params = {
+    name: params[:name],
+    email: params[:email],
+    password: params[:password]
+  }
+  @user = User.find(params[:id])
+  @user.update(edit_params)
+  @user.save
+  redirect "/#{params[:id]}"
 end
 
 configure do

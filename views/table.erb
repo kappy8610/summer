@@ -1,27 +1,35 @@
-<h1><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日の出席表</h1>
+<nav aria-label="breadcrumb"　>
+  <ol class="breadcrumb"　>
+    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日の出席確認</li>
+  </ol>
+</nav>
 
-<p>
-  <a href="/">
-  トップページへ
-  </a>
-</p>
 
 <p><%= @last_login_day %></p>
 
-<table>
-  <% @user.each do |user| %>
+<table class="table">
+  <thead>
     <tr>
-      <th>
-        <%= user.name%>
-      </th>
-      <td>
-        <% if !user.is_attendance%>
-          <p>欠席</p>
-        <% end %>
-        <% if user.is_attendance%>
-          <p>出席</p>
-        <% end %>
-      </td>
+      <th scope="col">名前</th>
+      <th scope="col">出欠</th>
     </tr>
+  </thead>
+  <tbody>
+    <% @user.each do |user| %>
+      <tr>
+        <th>
+          <%= user.name%>
+        </th>
+        <td>
+          <% if !user.is_attendance%>
+            欠席
+          <% end %>
+          <% if user.is_attendance%>
+            出席
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
   <% end %>
 </table>

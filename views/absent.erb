@@ -1,16 +1,31 @@
-<h1>欠席連絡</h1>
+<nav aria-label="breadcrumb"　>
+  <ol class="breadcrumb"　>
+    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
+    <li class="breadcrumb-item"><a href="/users">ユーザー一覧</a></li>
+    <li class="breadcrumb-item"><a href="/<%= @user.id%>"><%= @user.name%></a></li>
+    <li class="breadcrumb-item active" aria-current="page">欠席申請</li>
+  </ol>
+</nav>
 
-<form action="/<%= @user.id%>/new_absent" method="post">
-  <p>欠席者</p>
-  <input type="text" name="name" value=<%= @user.name%> />
+<div class="main">
+  <div class="card absent">
+    <div class="card-body">
+      <div class="form-group">
+        <form action="/<%= @user.id%>/new_absent" method="post">
+          <p>欠席者</p>
+          <input class="form-control" type="text" name="name" value=<%= @user.name%> />
 
-  <p>欠席日</p>
-  <input type="text" name="when" />
+          <p>欠席日</p>
+          <input class="form-control" type="date" name="when" />
 
-  <p>理由</p>
-  <input type="text" name="reason" />
+          <p>理由</p>
+          <input class="form-control" type="text" name="reason" />
 
-  <p>
-    <input type="submit" value="申請" />
-  </p>
-</form>
+          <p>
+            <input class="btn btn-primary" type="submit"value="申請" />
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

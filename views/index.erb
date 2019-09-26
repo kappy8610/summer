@@ -4,28 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>title</title>
+    <title>出席管理アプリ｜<%= "#{@title}" %></title>
   </head>
   <body>
-    <a href="sign_up">
-      <p>新規ユーザー登録</p>
-    </a>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">トップページ</li>
+      </ol>
+    </nav>
 
-    <a href="users">
-      <p>ユーザー一覧</p>
-    </a>
 
-    <a href="login">
-      <p>ログイン</p>
-    </a>
+    <div class="container">
+      <div class="item">
+        <div class="links">
+          <a href="users">
+            <button type="button" class="btn btn-outline-primary">
+            <p>ユーザー一覧</p>
+            </button>
+          </a>
+        </div>
 
-    <a href="table">
-      <p>出席確認</p>
-    </a>
+        <div class="links">
+          <a href="table">
+            <button type="button" class="btn btn-outline-primary">
+            <p>出席確認</p>
+            </button>
+          </a>
+        </div>
 
-    <a href="chack_absent">
-      <p>欠席連絡確認</p>
-    </a>
+        <div class="links">
+          <a href="chack_absent">
+            <button type="button" class="btn btn-outline-primary">
+            <p>欠席連絡確認</p>
+            </button>
+          </a>
+        </div>
+      </div>
 
+      <div class="item">
+        <div class="links">
+          <a href="sign_up">
+            <button type="button" class="btn btn-outline-primary">
+              <p>
+                新規ユーザー登録
+              </p>
+            </button>
+          </a>
+        </div>
+        <div class="links">
+          <a href="login">
+            <button type="button" class="btn btn-outline-primary">
+            <p>ログイン</p>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

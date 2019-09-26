@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+
+<%# ここからスタイルシート %>
+
+<style>
+
+  body {
+    background-color: #FBFBFB;
+  }
+
+  .logo {
+    font-size: 3em;
+    margin: 32px;
+  }
+
+  .sub-title {
+    color: white;
+    text-align: center;
+    background-color: blue;
+    width: 80%;
+    margin: auto;
+    padding: 16px;
+    border-radius: 40px;
+  }
+  
+  main {
+    width: 70%;
+    margin: auto;
+    margin-top: 32px;
+    padding: 16px 32px;
+  }
+
+  nav {
+    width: auto;
+    float: right;
+  }
+
+  main p {
+    font-size: 28px;
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .links {
+    margin: 16px;
+  }
+
+  .main {
+    margin-top: 64px;
+  }
+
+  .form-control {
+    width: auto;
+  }
+
+  .btn-primary {
+    margin: 8px 0;
+  }
+
+  <%# ユーザー一覧 %>
+  .users {
+    font-size: 24px;
+  }
+
+  <%# ユーザー情報 %>
+  .card-text {
+    font-size:24px;
+  }
+
+  .lefts {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  <%# ユーザー編集 %>
+  .edit {
+    margin-top: 12px;
+    font-size: 28px;
+  }
+
+  <%# 出席表 %>
+  table {
+    font-size: 24px;
+  }
+
+</style>
+
+<%# ここまでスタイルシート %>
+
+    <title>
+      <% if @title == nil %>
+        出席管理アプリ
+      <% else %>
+        <%= "出席管理アプリ｜#{@title}" %>
+      <% end %>
+    </title>
+  </head>
+  <body class="p-3 mb-2 bg-light text-dark">
+    <header>
+    <a href="/">
+      <h1 class="logo">出席管理アプリ</h1>
+    </a>
+      <h1 class="sub-title"><%= @title %></h1>
+    </header>
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+
+
+
+</html>
