@@ -1,7 +1,9 @@
 <nav aria-label="breadcrumb"　>
   <ol class="breadcrumb"　>
     <li class="breadcrumb-item"><a href="/">トップページ</a></li>
-    <li class="breadcrumb-item active" aria-current="page">欠席連絡一覧</li>
+    <li class="breadcrumb-item"><a href="/users">ユーザー一覧</a></li>
+    <li class="breadcrumb-item"><a href="/<%= @user.id%>"><%= @user.name%></a></li>
+    <li class="breadcrumb-item active" aria-current="page">個人の欠席連絡一覧</li>
   </ol>
 </nav>
 
@@ -14,13 +16,10 @@
     </tr>
   </thead>
   <tbody>
-    <% @absents.reverse_each do |absent| %>
+    <% @user.absents.reverse_each do |absent| %>
       <tr>
-      
         <th>
-          <a href="/<%= absent.user.id %>">
-            <%= absent.user.name%>
-          </a>
+          <%= absent.user.name%>
         </th>
         <td>
           <%= absent.when%>

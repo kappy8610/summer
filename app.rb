@@ -42,8 +42,9 @@ end
 # 欠席連絡確認ページ
 get '/chack_absent' do
   @title = "欠席連絡一覧"
-  @absent = Absent.all
+  @absents = Absent.all
   erb :chack_absent
+
 end
 
 # 新規出席表制作処理
@@ -98,12 +99,19 @@ get '/:id/absent' do
   erb :absent
 end
 
+# 各ユーザーの欠席連絡一覧
+get '/:id/list' do
+  @user = User.find(params[:id])
+  @title = "#{@user.name}の欠席連絡一覧"
+  erb :absent_list
+end
+
 # 新規欠席連絡
 post '/:id/new_absent' do
   @title = "トップページ"
   @user = User.find(params[:id])
   absent_params = {
-    name: params[:name],
+    user_id: params[:user_id],
     when: params[:when],
     reason: params[:reason]
   }

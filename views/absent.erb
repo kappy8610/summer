@@ -12,8 +12,7 @@
     <div class="card-body">
       <div class="form-group">
         <form action="/<%= @user.id%>/new_absent" method="post">
-          <p>欠席者</p>
-          <input class="form-control" type="text" name="name" value=<%= @user.name%> />
+          <input type="hidden" name="user_id" value=<%= @user.id%>>
 
           <p>欠席日</p>
           <input class="form-control" type="date" name="when" />

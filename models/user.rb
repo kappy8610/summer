@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  belongs_to :attendance
-  belongs_to :absent
-  belongs_to :belong
+  has_many :absents
+  has_many :attendances, through: :attendance_users
+  has_many :attendance_users
 end

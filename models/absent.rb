@@ -1,4 +1,7 @@
 class Absent < ActiveRecord::Base
-  has_one :user, dependent: :destroy
-  has_one :day, dependent: :destroy
+  belongs_to :user
+
+  def user
+    User.find(user_id)
+  end
 end
