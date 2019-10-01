@@ -1,16 +1,24 @@
 <nav aria-label="breadcrumb"　>
   <ol class="breadcrumb"　>
     <li class="breadcrumb-item"><a href="/">トップページ</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日の出席確認</li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @time.year%>年<%= @time.month%>月<%= @time.day%>日の出席確認</li>
   </ol>
 </nav>
 
+<form action="/table" method="post">
+  <input type="hidden" name="month_at" value="<%= @time.month%>" />
+  <input type="hidden" name="day_at" value="<%= @time.day %>" />
+  <input class="btn btn-primary" type="submit" value="更新" />
+</form>
 
-<p><%= @last_login_day %></p>
+<p>デバック用メモ</p>
+<P>time:<%= @time.month%>月<%= @time.day%>日</p>
+<p>today:<%= @today.month_at%>月<%= @today.day_at%>日</p>
 
 <table class="table">
   <thead>
     <tr>
+      <th scope="col">所属</th>
       <th scope="col">名前</th>
       <th scope="col">出欠</th>
     </tr>
@@ -18,6 +26,9 @@
   <tbody>
     <% @user.each do |user| %>
       <tr>
+        <th>
+          <%= user.belong.name%>
+        </th>
         <th>
           <%= user.name%>
         </th>

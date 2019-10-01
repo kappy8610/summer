@@ -15,6 +15,13 @@
           <p class="edit">ユーザーネーム</p class="edit">
           <input class="form-control" type="text" name="name" value=<%= @user.name %> />
 
+          <p>所属</p>
+          <select class="form-control" name="belong_id">
+            <% @belongs.each do |belong| %>
+              <option value="<%= belong.id%>"><%= belong.name%></option>
+            <% end %>
+          </select>
+
           <p class="edit">メール</p class="edit">
           <input class="form-control" type="email" name="email" value=<%= @user.email %> />
 

@@ -17,12 +17,20 @@
             <p>ユーザーネーム</p>
             <input class="form-control" type="text" name="name" />
 
+            <p>所属</p>
+            <select class="form-control" name="belong_id">
+              <% @belongs.each do |belong| %>
+                <option value="<%= belong.id%>"><%= belong.name%></option>
+              <% end %>
+            </select>
+
             <p>メール</p>
             <input class="form-control" type="email" name="email" />
 
             <p>パスワード</p>
             <input class="form-control" type="password" name="password" />
-            
+
+            <input type="hidden" name="day_at" value="<%= @time.day%>" />
             <input class="btn btn-primary" type="submit" value="新規登録" />
           </form>
         </div>
@@ -31,7 +39,9 @@
   </div>
 </div>
 
-<div class="main">
+
+<%# ここから管理者用（未実装） %>
+<%# <div class="main">
   <div class="card rights" style="width: 29rem;">
     <div class="card-body">
       <div class="card-title">
@@ -52,5 +62,5 @@
         </form>
       </div>
     </div>
-  </div>
+  </div> %>
 </div>

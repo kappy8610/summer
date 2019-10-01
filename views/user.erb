@@ -7,7 +7,7 @@
 </nav>
 
 <div class="main">
-  <div class="card lefts" style="width: 29rem;">
+  <div class="card lefts" style="width: 50%;">
     <div class="card-body">
       <h2 class="card-title">出席申請</h2>
       <form action="/<%= @user.id %>" method="POST" />
@@ -26,7 +26,15 @@
     </div>
   </div>
 
-  <div class="card rights" style="width: 29rem;">
+  <div class="card lefts" style="width: 50%;">
+    <div class="card-body">
+      <h2 class="card-title">詳細</h2>
+      <p class="card-text">メール：<%= @user.email%></p>
+      <p class="card-text">所属：<%= @user.belong.name %></p>
+    </div>
+  </div>
+
+  <div class="card rights" style="width: 50%;">
     <div class="card-body">
       <h2 class="card-title">欠席連絡</h2>
         <p class="card-text">
@@ -42,7 +50,7 @@
     </div>
   </div>  
 
-  <div class="card rights" style="width: 29rem;">
+  <div class="card rights" style="width: 50%;">
     <div class="card-body">
       <h2 class="card-title">編集</h2>
       <p class="card-text">

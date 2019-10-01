@@ -1,0 +1,26 @@
+<nav aria-label="breadcrumb"　>
+  <ol class="breadcrumb"　>
+    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">新規所属グループ作成</li>
+  </ol>
+</nav>
+
+<div class="main">
+  <div class="card lefts" style="width: 29rem;">
+    <div class="card-body">
+      <div class="card-title">
+        <h2>作成</h2>
+      </div>
+      <div class="card-text">
+        <div class="from-group">
+          <form action="/new_belong" method="POST">
+            <p>名前</p>
+            <input class="form-control" type="text" name="name" />
+
+            <input class="btn btn-primary" type="submit" value="新規作成" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

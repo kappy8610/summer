@@ -10,18 +10,23 @@ require './models/attendance.rb'
 require './models/belong.rb'
 require './models/day.rb'
 require './models/user.rb'
+require './models/today.rb'
+require './models/attendance_user.rb'
 
 enable :method_override
 
 # トップページ
 get '/' do
   @title = "トップページ"
+  @time = Time.new
   erb :index
 end
 
 # 新規登録ページ
 get '/sign_up' do
   @title = "新規登録"
+  @belongs = Belong.all
+  @time = Time.new  
   erb :sign_up
 end
 
@@ -33,10 +38,38 @@ end
 
 # 出席確認ページ
 get '/table' do
-  @day = Time.new
-  @title = "#{@day.year}年#{@day.month}月#{@day.day}日の主席確認"
+  @time = Time.new
+  @title = "#{@time.year}年#{@time.month}月#{@time.day}日の主席確認"
   @user = User.all
+  # @today = Today.create!(month_at: 0 ,day_at:0)
+  @today = Today.find(1)
   erb :table
+end
+
+# 日付変更処理
+post '/table' do
+  @time = Time.new
+  user = User.all
+  today = Today.find(1)
+  if today.day_at != @time.day || today.month_at != @time.month then
+    day_params = {
+      month_at: params[:month_at],
+      day_at: params[:day_at]
+    }
+    today.update(day_params)
+
+    user.each do |user|
+      attendance_user = AttendanceUser.create!(user_id: user)
+    end
+
+    attendance_user = AttendanceUser.all
+    attendance_user.each do |attendance_user|
+      attendance = Attendance.create!(attendance_users_id: attendance_user, day_at: today.day_at)
+    end
+    p "_______________________更新"
+  end
+
+  redirect '/table'
 end
 
 # 欠席連絡確認ページ
@@ -44,12 +77,18 @@ get '/chack_absent' do
   @title = "欠席連絡一覧"
   @absents = Absent.all
   erb :chack_absent
+end
 
+# 新規所属グループ作成ページ
+get '/belong' do
+  @title = "新規所属グループ作成"
+  erb :belong
 end
 
 # 新規出席表制作処理
 post '/new_attendance' do
   @title = "トップページ"
+  @time = Time.new
   new_attendance_params = {
     name: params[:name]
   }
@@ -60,10 +99,25 @@ end
 
 # 一般ユーザーの新規登録処理
 post '/sign_up' do
+  # attendance_params = {
+  #   attendance_user_id: params[:attendance_user_id],
+  #   day_at: params[:day_at]
+  # }
+  # attendance = Attendance.new(attendance_params)
+  # attendance.save
+
+  # attendance_user_params = {
+  #   user_id: params[:user_id],
+  #   attendance_id: params[:attendance_id]
+  # }
+  # attendance_user = AttendanceUser.new(attendance_user_params)
+  # attendance_user.save
+
   sign_up_params = {
     name: params[:name],
+    belong_id: params[:belong_id],
     email: params[:email],
-    password: params[:password]
+    password: params[:password],
   }
   user = User.new(sign_up_params)
   user.save
@@ -81,6 +135,17 @@ post '/sign_up_admin' do
   admin = Admin.new(sign_up_admin_params)
   admin.save
   redirect '/users'
+end
+
+# 新規所属グループ作成処理
+post '/new_belong' do
+  @title = "トップページ"
+  belong_params = {
+    name: params[:name]
+  }
+  belong = Belong.new(belong_params)
+  belong.save
+  redirect '/'
 end
 
 # ユーザー一覧ページ
@@ -142,6 +207,7 @@ end
 # 各ユーザーの編集ページ
 get '/:id/edit' do
   @user = User.find(params[:id])
+  @belongs = Belong.all
   @title = "ユーザー情報の編集"
   erb :edit
 end
@@ -150,6 +216,7 @@ end
 post '/:id/edit' do
   edit_params = {
     name: params[:name],
+    belong_id: params[:belong_id],
     email: params[:email],
     password: params[:password]
   }
