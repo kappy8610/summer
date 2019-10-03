@@ -39,9 +39,9 @@ end
 # 出席確認ページ
 get '/table' do
   @time = Time.new
-  @title = "#{@time.year}年#{@time.month}月#{@time.day}日の主席確認"
+  @title = "#{@time.month}月の出席確認"
   @user = User.all
-  # @today = Today.create!(month_at: 0 ,day_at:0)
+  # @today = Today.create!(month_at: 0, day_at:0, year_at: 0)
   @today = Today.find(1)
   erb :table
 end
@@ -51,22 +51,22 @@ post '/table' do
   @time = Time.new
   user = User.all
   today = Today.find(1)
-  if today.day_at != @time.day || today.month_at != @time.month then
+  if today.day_at != @time.day || today.month_at != @time.month || today.year != @time.year then
     day_params = {
+      year_at: params[:year_at],
       month_at: params[:month_at],
       day_at: params[:day_at]
     }
     today.update(day_params)
 
+    user = User.all
     user.each do |user|
-      attendance_user = AttendanceUser.create!(user_id: user)
+      attendance = Attendance.create!(user_id: user.id, 
+                                      day_at: today.day_at, 
+                                      month_at: today.month_at,
+                                      year_at: today.year_at)
+      attendance.save
     end
-
-    attendance_user = AttendanceUser.all
-    attendance_user.each do |attendance_user|
-      attendance = Attendance.create!(attendance_users_id: attendance_user, day_at: today.day_at)
-    end
-    p "_______________________更新"
   end
 
   redirect '/table'
@@ -99,20 +99,6 @@ end
 
 # 一般ユーザーの新規登録処理
 post '/sign_up' do
-  # attendance_params = {
-  #   attendance_user_id: params[:attendance_user_id],
-  #   day_at: params[:day_at]
-  # }
-  # attendance = Attendance.new(attendance_params)
-  # attendance.save
-
-  # attendance_user_params = {
-  #   user_id: params[:user_id],
-  #   attendance_id: params[:attendance_id]
-  # }
-  # attendance_user = AttendanceUser.new(attendance_user_params)
-  # attendance_user.save
-
   sign_up_params = {
     name: params[:name],
     belong_id: params[:belong_id],
@@ -190,17 +176,20 @@ get '/:id' do
   @user = User.find(params[:id])
   @title = "ユーザー情報"
   @day = Time.new
+  @attendance = Attendance.find_by(user_id: @user.id, day_at: @day.day, month_at: @day.month, year_at: @day.year)
   erb :user
 end
 
 # 各ユーザーの出席申請
 post '/:id' do
-  @user = User.find(params[:id])
-  @user.is_attendance = true
-  @user.attendance_num += 1
-  @user.save
   @day = Time.new
   @title = "ユーザー情報"
+  @user = User.find(params[:id])
+  @user.attendance_num += 1
+  @attendance = Attendance.find_by(user_id: @user.id, day_at: @day.day, month_at: @day.month, year_at: @day.year)
+  @attendance.is_attendance = true
+  @user.save
+  @attendance.save
   erb :user
 end
 

@@ -1,19 +1,16 @@
 <nav aria-label="breadcrumb"　>
   <ol class="breadcrumb"　>
     <li class="breadcrumb-item"><a href="/">トップページ</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><%= @time.year%>年<%= @time.month%>月<%= @time.day%>日の出席確認</li>
+    <li class="breadcrumb-item active" aria-current="page"></li><%= @time.month%>月の出席確認</li>
   </ol>
 </nav>
 
 <form action="/table" method="post">
+  <input type="hidden" name="year_at" value="<%= @time.year%>" />
   <input type="hidden" name="month_at" value="<%= @time.month%>" />
   <input type="hidden" name="day_at" value="<%= @time.day %>" />
   <input class="btn btn-primary" type="submit" value="更新" />
 </form>
-
-<p>デバック用メモ</p>
-<P>time:<%= @time.month%>月<%= @time.day%>日</p>
-<p>today:<%= @today.month_at%>月<%= @today.day_at%>日</p>
 
 <table class="table">
   <thead>

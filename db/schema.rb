@@ -34,10 +34,12 @@ ActiveRecord::Schema.define(version: 2019_09_30_011718) do
   end
 
   create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "attendance_users_id"
+    t.bigint "user_id"
     t.integer "day_at"
+    t.integer "month_at"
+    t.integer "year_at"
     t.boolean "is_attendance", default: false, null: false
-    t.index ["attendance_users_id"], name: "index_attendances_on_attendance_users_id"
+    t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
   create_table "belongs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -47,13 +49,14 @@ ActiveRecord::Schema.define(version: 2019_09_30_011718) do
   end
 
   create_table "todays", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "year_at", default: 0, null: false
     t.integer "month_at", default: 0, null: false
     t.integer "day_at", default: 0, null: false
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "absent_id"
-    t.bigint "attendance_users_id"
+    t.bigint "attendance_id"
     t.bigint "belong_id"
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -61,7 +64,7 @@ ActiveRecord::Schema.define(version: 2019_09_30_011718) do
     t.boolean "is_attendance", default: false, null: false
     t.integer "attendance_num", default: 0, null: false
     t.index ["absent_id"], name: "index_users_on_absent_id"
-    t.index ["attendance_users_id"], name: "index_users_on_attendance_users_id"
+    t.index ["attendance_id"], name: "index_users_on_attendance_id"
     t.index ["belong_id"], name: "index_users_on_belong_id"
   end
 

@@ -1,4 +1,7 @@
 class Attendance < ActiveRecord::Base
-  has_many :users, through: :attendance_users
-  has_many :attendance_users
+  belongs_to :user
+
+  def user
+    User.find(user_id)
+  end
 end

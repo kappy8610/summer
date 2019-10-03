@@ -7,6 +7,7 @@
 </nav>
 
 <div class="main">
+
   <div class="card lefts" style="width: 50%;">
     <div class="card-body">
       <h2 class="card-title">出席申請</h2>
@@ -15,10 +16,10 @@
       </form>
 
       <p class="card-text"><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日：
-        <% if !@user.is_attendance%>
+        <% if !@attendance.is_attendance%>
           欠席</p>
         <% end %>
-        <% if @user.is_attendance%>
+        <% if @attendance.is_attendance%>
           出席</p>
         <% end %>
 
@@ -61,7 +62,4 @@
     </div>
   </div>
 
-  <%# <div class="email"> %>
-    <%# <p>メールアドレス：<%= @user.email</p> %>
-  <%# </div> %>
 </div>
