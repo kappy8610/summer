@@ -5,20 +5,24 @@ require 'sinatra/activerecord'
 require "time"
 
 require './models/absent.rb'
-require './models/admin.rb'
 require './models/attendance.rb'
 require './models/belong.rb'
 require './models/day.rb'
 require './models/user.rb'
 require './models/today.rb'
-require './models/attendance_user.rb'
 
 enable :method_override
+
+init = true
 
 # トップページ
 get '/' do
   @title = "トップページ"
   @time = Time.new
+  if init then
+    today = Today.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
+    init = false
+  end
   erb :index
 end
 
@@ -41,7 +45,6 @@ get '/table' do
   @time = Time.new
   @title = "#{@time.month}月の出席確認"
   @user = User.all
-  # @today = Today.create!(month_at: 0, day_at:0, year_at: 0)
   @today = Today.find(1)
   erb :table
 end
@@ -51,7 +54,7 @@ post '/table' do
   @time = Time.new
   user = User.all
   today = Today.find(1)
-  if today.day_at != @time.day || today.month_at != @time.month || today.year != @time.year then
+  if today.day_at != @time.day || today.month_at != @time.month || today.year_at != @time.year then
     day_params = {
       year_at: params[:year_at],
       month_at: params[:month_at],
@@ -99,6 +102,7 @@ end
 
 # 一般ユーザーの新規登録処理
 post '/sign_up' do
+  today = Today.find(1)
   sign_up_params = {
     name: params[:name],
     belong_id: params[:belong_id],
@@ -107,19 +111,11 @@ post '/sign_up' do
   }
   user = User.new(sign_up_params)
   user.save
-  redirect '/users'
-end
-
-# 管理者の新規登録処理
-post '/sign_up_admin' do
-  @title = "ユーザー一覧"
-  sign_up_admin_params = {
-    name: params[:name],
-    email: params[:email],
-    password: params[:password]
-  }
-  admin = Admin.new(sign_up_admin_params)
-  admin.save
+  attendance = Attendance.create!(user_id: user.id, 
+                                  day_at: today.day_at, 
+                                  month_at: today.month_at,
+                                  year_at: today.year_at)
+  attendance.save
   redirect '/users'
 end
 
@@ -177,6 +173,7 @@ get '/:id' do
   @title = "ユーザー情報"
   @day = Time.new
   @attendance = Attendance.find_by(user_id: @user.id, day_at: @day.day, month_at: @day.month, year_at: @day.year)
+  p "________#{@attendance.is_attendance}*****"
   erb :user
 end
 

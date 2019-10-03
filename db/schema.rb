@@ -20,19 +20,6 @@ ActiveRecord::Schema.define(version: 2019_09_30_011718) do
     t.index ["user_id"], name: "index_absents_on_user_id"
   end
 
-  create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.string "email", default: "", null: false
-    t.string "password", default: "", null: false
-  end
-
-  create_table "attendance_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "attendance_id"
-    t.index ["attendance_id"], name: "index_attendance_users_on_attendance_id"
-    t.index ["user_id"], name: "index_attendance_users_on_user_id"
-  end
-
   create_table "attendances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "day_at"
@@ -69,6 +56,4 @@ ActiveRecord::Schema.define(version: 2019_09_30_011718) do
   end
 
   add_foreign_key "absents", "users"
-  add_foreign_key "attendance_users", "attendances"
-  add_foreign_key "attendance_users", "users"
 end
