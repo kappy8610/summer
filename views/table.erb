@@ -17,7 +17,11 @@
     <tr>
       <th scope="col">所属</th>
       <th scope="col">名前</th>
-      <th scope="col">出欠</th>
+      <% @day.each do |day|%>
+      <th scope="col">
+        <%= day.day_at%>
+      </th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -29,14 +33,16 @@
         <th>
           <%= user.name%>
         </th>
-        <td>
-          <% if !user.is_attendance%>
-            欠席
-          <% end %>
-          <% if user.is_attendance%>
-            出席
-          <% end %>
-        </td>
+        <% @day.each do |day|%>
+          <td>
+            <% if !user.is_attendance%>
+              出席
+            <% end %>
+            <% if user.is_attendance%>
+              出席
+            <% end %>
+          </td>
+      <% end %>
       </tr>
     </tbody>
   <% end %>

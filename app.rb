@@ -21,6 +21,8 @@ get '/' do
   @time = Time.new
   if init then
     today = Today.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
+    day = Day.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
+    day.save
     init = false
   end
   erb :index
@@ -46,6 +48,7 @@ get '/table' do
   @title = "#{@time.month}月の出席確認"
   @user = User.all
   @today = Today.find(1)
+  @day = Day.all
   erb :table
 end
 
@@ -61,6 +64,8 @@ post '/table' do
       day_at: params[:day_at]
     }
     today.update(day_params)
+    day = Day.new(day_params)
+    day.save
 
     user = User.all
     user.each do |user|
@@ -133,8 +138,6 @@ end
 # ユーザー一覧ページ
 get '/users' do
   @title = "ユーザー一覧"
-  @day = Time.new
-  @last_login_day = @day
   @user = User.all
   erb :users
 end
@@ -171,19 +174,17 @@ end
 get '/:id' do
   @user = User.find(params[:id])
   @title = "ユーザー情報"
-  @day = Time.new
-  @attendance = Attendance.find_by(user_id: @user.id, day_at: @day.day, month_at: @day.month, year_at: @day.year)
-  p "________#{@attendance.is_attendance}*****"
+  @time = Time.new
+  @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)
   erb :user
 end
 
 # 各ユーザーの出席申請
 post '/:id' do
-  @day = Time.new
   @title = "ユーザー情報"
   @user = User.find(params[:id])
   @user.attendance_num += 1
-  @attendance = Attendance.find_by(user_id: @user.id, day_at: @day.day, month_at: @day.month, year_at: @day.year)
+  @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)
   @attendance.is_attendance = true
   @user.save
   @attendance.save

@@ -15,7 +15,7 @@
         <input type="submit" value="主席申請" class="btn btn-primary" />
       </form>
 
-      <p class="card-text"><%= @day.year%>年<%= @day.month%>月<%= @day.day%>日：
+      <p class="card-text"><%= @time.year%>年<%= @time.month%>月<%= @time.day%>日：
         <% if !@attendance.is_attendance%>
           欠席</p>
         <% end %>

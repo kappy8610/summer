@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_30_011718) do
+ActiveRecord::Schema.define(version: 2019_10_03_095915) do
 
   create_table "absents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 2019_09_30_011718) do
     t.bigint "user_id"
     t.string "name", default: "", null: false
     t.index ["user_id"], name: "index_belongs_on_user_id"
+  end
+
+  create_table "days", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "year_at", default: 0, null: false
+    t.integer "month_at", default: 0, null: false
+    t.integer "day_at", default: 0, null: false
   end
 
   create_table "todays", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
