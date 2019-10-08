@@ -32,6 +32,9 @@
       <h2 class="card-title">詳細</h2>
       <p class="card-text">メール：<%= @user.email%></p>
       <p class="card-text">所属：<%= @user.belong.name %></p>
+      <form action="logout" method="POST">
+        <input type="hidden" name="id" value="<%= @user.id%>" />
+      <input class="btn btn-primary" type="submit" value="ログアウト" />
     </div>
   </div>
 

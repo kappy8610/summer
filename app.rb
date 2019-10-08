@@ -13,7 +13,7 @@ require './models/today.rb'
 
 enable :method_override
 
-init = true
+init = false
 
 # トップページ
 get '/' do
@@ -22,6 +22,7 @@ get '/' do
   if init then
     today = Today.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
     day = Day.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
+    today.save
     day.save
     init = false
   end
@@ -36,10 +37,56 @@ get '/sign_up' do
   erb :sign_up
 end
 
+# ユーザーの新規登録処理
+post '/sign_up' do
+  today = Today.find(1)
+  sign_up_params = {
+    name: params[:name],
+    belong_id: params[:belong_id],
+    email: params[:email],
+    password: params[:password],
+  }
+  user = User.new(sign_up_params)
+  user.save
+  days = Day.all
+  days.each do |day| 
+    attendance = Attendance.create!(user_id: user.id, 
+                                    day_at: day.day_at, 
+                                    month_at: day.month_at,
+                                    year_at: day.year_at)
+    attendance.save
+  end
+  redirect '/users'
+end
+
 # ログインページ
 get '/login' do
   @title = "ログイン"
   erb :login
+end
+
+# ログイン処理
+post '/login' do
+  user = User.find_by(name: params[:name])
+  if user.password == params[:input_password] then
+    user.input_password = params[:input_password]
+    user.save
+    @title = "トップページ"
+    p "ログイン成功"
+    erb :index
+  else
+    @title = "ログイン"
+    p "ログイン失敗"
+    redirect '/login'
+  end
+end
+
+# ログアウト処理
+post '/logout' do
+  user = User.find(params[:id])
+  user.input_password = ""
+  user.save
+  redirect '/'
 end
 
 # 出席確認ページ
@@ -48,7 +95,8 @@ get '/table' do
   @title = "#{@time.month}月の出席確認"
   @user = User.all
   @today = Today.find(1)
-  @day = Day.all
+  @days = Day.all
+  @attendance = Attendance.all
   erb :table
 end
 
@@ -105,25 +153,6 @@ post '/new_attendance' do
   redirect '/'
 end
 
-# 一般ユーザーの新規登録処理
-post '/sign_up' do
-  today = Today.find(1)
-  sign_up_params = {
-    name: params[:name],
-    belong_id: params[:belong_id],
-    email: params[:email],
-    password: params[:password],
-  }
-  user = User.new(sign_up_params)
-  user.save
-  attendance = Attendance.create!(user_id: user.id, 
-                                  day_at: today.day_at, 
-                                  month_at: today.month_at,
-                                  year_at: today.year_at)
-  attendance.save
-  redirect '/users'
-end
-
 # 新規所属グループ作成処理
 post '/new_belong' do
   @title = "トップページ"
@@ -142,46 +171,23 @@ get '/users' do
   erb :users
 end
 
-# 欠席申請
-get '/:id/absent' do
-  @title = "欠席申請"
-  @user = User.find(params[:id])
-  erb :absent
-end
-
-# 各ユーザーの欠席連絡一覧
-get '/:id/list' do
-  @user = User.find(params[:id])
-  @title = "#{@user.name}の欠席連絡一覧"
-  erb :absent_list
-end
-
-# 新規欠席連絡
-post '/:id/new_absent' do
-  @title = "トップページ"
-  @user = User.find(params[:id])
-  absent_params = {
-    user_id: params[:user_id],
-    when: params[:when],
-    reason: params[:reason]
-  }
-  absent = Absent.new(absent_params)
-  absent.save
-  redirect '/'
-end
-
 # 各ユーザーの情報ページ
 get '/:id' do
   @user = User.find(params[:id])
   @title = "ユーザー情報"
-  @time = Time.new
-  @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)
-  erb :user
+  if @user.password == @user.input_password then
+    @time = Time.new
+    @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)
+    erb :user
+  else
+    redirect '/users'
+  end
 end
 
 # 各ユーザーの出席申請
 post '/:id' do
   @title = "ユーザー情報"
+  @time = Time.new
   @user = User.find(params[:id])
   @user.attendance_num += 1
   @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)
@@ -191,26 +197,74 @@ post '/:id' do
   erb :user
 end
 
+# 欠席申請
+get '/:id/absent' do
+  @user = User.find(params[:id])
+  if @user.password == @user.input_password then
+    @title = "欠席申請"
+    erb :absent
+  else
+    redirect 'users'
+  end
+end
+
+# 各ユーザーの欠席連絡一覧
+get '/:id/list' do
+  @user = User.find(params[:id])
+  if @user.password == @user.input_password then
+    @title = "#{@user.name}の欠席連絡一覧"
+    erb :absent_list
+  else
+    redirect 'users'
+  end
+end
+
+# 新規欠席連絡
+post '/:id/new_absent' do
+  @user = User.find(params[:id])
+  if @user.password == @user.input_password then
+  absent_params = {
+    user_id: params[:user_id],
+    when: params[:when],
+    reason: params[:reason]
+  }
+  absent = Absent.new(absent_params)
+  absent.save
+  redirect '/'
+  else
+    redirect 'users'
+  end
+end
+
 # 各ユーザーの編集ページ
 get '/:id/edit' do
   @user = User.find(params[:id])
-  @belongs = Belong.all
-  @title = "ユーザー情報の編集"
-  erb :edit
+  if @user.password == @user.input_password then
+    @belongs = Belong.all
+    @title = "ユーザー情報の編集"
+    erb :edit
+  else
+    redirect 'users'
+  end
 end
 
 # 各ユーザーの編集処理
 post '/:id/edit' do
-  edit_params = {
-    name: params[:name],
-    belong_id: params[:belong_id],
-    email: params[:email],
-    password: params[:password]
-  }
   @user = User.find(params[:id])
-  @user.update(edit_params)
-  @user.save
-  redirect "/#{params[:id]}"
+  if @user.password == @user.input_password then
+    edit_params = {
+      name: params[:name],
+      belong_id: params[:belong_id],
+      email: params[:email],
+      password: params[:password]
+    }
+    @user = User.find(params[:id])
+    @user.update(edit_params)
+    @user.save
+    redirect "/#{params[:id]}"
+  else
+    redirect 'users'
+  end
 end
 
 configure do

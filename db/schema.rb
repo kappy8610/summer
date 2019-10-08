@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_10_03_095915) do
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "password", default: "", null: false
+    t.string "input_password", default: "", null: false
     t.boolean "is_attendance", default: false, null: false
     t.integer "attendance_num", default: 0, null: false
     t.index ["absent_id"], name: "index_users_on_absent_id"

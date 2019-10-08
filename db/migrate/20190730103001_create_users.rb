@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :name, null: false, default: ''
       t.string :email, null: false, default: ''
       t.string :password, null: false, default: ''
+      t.string :input_password, null: false, default: ''
       t.boolean :is_attendance ,null: false, default: false
       t.integer:attendance_num ,null: false, default: 0
     end

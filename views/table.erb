@@ -17,9 +17,9 @@
     <tr>
       <th scope="col">所属</th>
       <th scope="col">名前</th>
-      <% @day.each do |day|%>
+      <% @days.each do |day|%>
       <th scope="col">
-        <%= day.day_at%>
+        <%= day.day_at%>日
       </th>
       <% end %>
     </tr>
@@ -33,17 +33,18 @@
         <th>
           <%= user.name%>
         </th>
-        <% @day.each do |day|%>
+        <% @days.each do |day|%>
           <td>
-            <% if !user.is_attendance%>
-              出席
+            <% attendance = Attendance.find_by(user_id:user.id, day_at: day.day_at) %>
+            <% if !attendance.is_attendance %>
+              欠席
             <% end %>
-            <% if user.is_attendance%>
+            <% if attendance.is_attendance %>
               出席
             <% end %>
           </td>
-      <% end %>
+        <% end %>
       </tr>
-    </tbody>
-  <% end %>
+    <% end %>
+  </tbody>
 </table>
