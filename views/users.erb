@@ -1,18 +1,18 @@
 <nav aria-label="breadcrumb"　>
   <ol class="breadcrumb"　>
-    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
-    <li class="breadcrumb-item active" aria-current="page">ユーザー一覧</li>
+    <li><a href="/">トップページ</a></li>
+    <li>ユーザー一覧</li>
   </ol>
 </nav>
 
-<div class="main">
-  <div class="list-group">
+<div class="main users">
+  <ul>
       <% @user.each do |user| %>
-        <p class="users">
-          <a href="/<%= user.id %>" class="list-group-item list-group-item-action">
+        <a href="/<%= user.id %>">
+          <li>
             <%= user.name%>
-          </a>
-        </p>
+          </li>
+        </a>
       <% end %>
-  </div>
+  </ul>
 </div>

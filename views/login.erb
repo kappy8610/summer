@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb"　>
   <ol class="breadcrumb"　>
-    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
-    <li class="breadcrumb-item active" aria-current="page">ログイン</li>
+    <li><a href="/">トップページ</a></li>
+    <li>ログイン</li>
   </ol>
 </nav>
 
@@ -9,12 +9,16 @@
   <div class="card lefts" style="width: 29rem;">
     <div class="card-body">
       <div class="card-text">
+        <div class="from-group">
         <form action="login" method="POST">
-          <p>ユーザーネーム</p>
-          <input type="text" name="name" />
+          <p>名前</p>
+          <input class="form-control" type="text" name="name" />
+
+          <p>メール</p>
+          <input class="form-control" type="email" name="email" />
 
           <p>パスワード</p>
-          <input type="password" name="input_password" />
+          <input class="form-control" type="password" name="input_password" />
 
           <p>
             <input class="btn btn-primary" type="submit" value="ログイン" />
@@ -24,24 +28,4 @@
       </div>
     </div>
   </div>
-
-  <%# <div class="card lefts" style="width: 29rem;">
-    <div class="card-body">
-      <div class="card-title">
-        <h2>ログアウト</h2>
-      </div>
-      <div class="card-text">
-        <form action="logout" method="POST">
-          <p>ユーザーネーム</p>
-          <input type="text" name="name" />
-
-          <p>パスワード</p>
-          <input type="password" name="input_password" />
-
-          <input type="submit" value="ログイン" />
-
-        </form>
-      </div>
-    </div>
-  </div> %>
 </div>

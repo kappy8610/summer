@@ -67,7 +67,7 @@ end
 
 # ログイン処理
 post '/login' do
-  user = User.find_by(name: params[:name])
+  user = User.find_by(email: params[:email], name: params[:name])
   if user.password == params[:input_password] then
     user.input_password = params[:input_password]
     user.save
@@ -97,6 +97,7 @@ get '/table' do
   @today = Today.find(1)
   @days = Day.all
   @attendance = Attendance.all
+  @belongs = Belong.all
   erb :table
 end
 

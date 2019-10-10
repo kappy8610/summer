@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb"　>
   <ol class="breadcrumb"　>
-    <li class="breadcrumb-item"><a href="/">トップページ</a></li>
-    <li class="breadcrumb-item active" aria-current="page"></li><%= @time.month%>月の出席確認</li>
+    <li><a href="/">トップページ</a></li>
+    <li><%= @time.month%>月の出席確認</li>
   </ol>
 </nav>
 
@@ -12,39 +12,59 @@
   <input class="btn btn-primary" type="submit" value="更新" />
 </form>
 
-<table class="table">
+<table class="table tablesorter" id="table">
   <thead>
     <tr>
-      <th scope="col">所属</th>
-      <th scope="col">名前</th>
+      <th scope="col" class="sort">
+        所属
+        <i class="fas fa-sort"></i>
+      </th>
+      <th scope="col" class="sort">
+        名前
+        <i class="fas fa-sort"></i>
+      </th>
       <% @days.each do |day|%>
-      <th scope="col">
+      <th scope="col" class="sort">
         <%= day.day_at%>日
+        <i class="fas fa-sort"></i>
       </th>
       <% end %>
     </tr>
   </thead>
   <tbody>
-    <% @user.each do |user| %>
-      <tr>
-        <th>
-          <%= user.belong.name%>
-        </th>
-        <th>
-          <%= user.name%>
-        </th>
-        <% @days.each do |day|%>
-          <td>
-            <% attendance = Attendance.find_by(user_id:user.id, day_at: day.day_at) %>
-            <% if !attendance.is_attendance %>
-              欠席
-            <% end %>
-            <% if attendance.is_attendance %>
-              出席
-            <% end %>
-          </td>
+    <% @belongs.each do |belong| %>
+      <% @user.each do |user| %>
+        <% if user.belong.id == belong.id then %>
+        <tr>
+          <th>
+            <%= user.belong.name%>
+          </th>
+          <th>
+            <%= user.name%>
+          </th>
+          <% @days.each do |day|%>
+            <td>
+              <% attendance = Attendance.find_by(user_id:user.id, day_at: day.day_at) %>
+              <% if attendance.month_at == @today.month_at && attendance.year_at == @today.year_at%>
+                <% if !attendance.is_attendance then%>
+                  欠席
+                <% else %>
+                  出席
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
         <% end %>
-      </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
+
+<script>
+$(document).ready(function() 
+    { 
+        $("#table").tablesorter(); 
+    } 
+);
+</script>
