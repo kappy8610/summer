@@ -68,15 +68,19 @@ end
 # ログイン処理
 post '/login' do
   user = User.find_by(email: params[:email], name: params[:name])
-  if user.password == params[:input_password] then
-    user.input_password = params[:input_password]
-    user.save
-    @title = "トップページ"
-    p "ログイン成功"
-    erb :index
+  if user then
+    if user.password == params[:input_password] then
+      user.input_password = params[:input_password]
+      user.save
+      @title = "トップページ"
+      p "ログイン成功"
+      erb :index
+    else
+      @title = "ログイン"
+      p "ログイン失敗"
+      redirect '/login'
+    end
   else
-    @title = "ログイン"
-    p "ログイン失敗"
     redirect '/login'
   end
 end
