@@ -1,4 +1,4 @@
-<nav aria-label="breadcrumb"　>
+<nav aria-label="breadcrumb">
   <ol class="breadcrumb"　>
     <li><a href="/">トップページ</a></li>
     <li><a href="/users">ユーザー一覧</a></li>
@@ -6,63 +6,72 @@
   </ol>
 </nav>
 
+<div class="update">
+  <form action="/table" method="post">
+    <input type="hidden" name="year_at" value="<%= @time.year%>" />
+    <input type="hidden" name="month_at" value="<%= @time.month%>" />
+    <input type="hidden" name="update" value="<%= @user.id %>" />
+    <input class="btn btn-primary" type="submit" value="更新" />
+  </form>
+</div>
+
 <div class="main">
+  <div>
+    <div class="card lefts">
+      <div class="card-body">
+        <h2 class="card-title">出席申請</h2>
+        <form action="/<%= @user.id %>" method="POST" />
+          <input type="submit" value="主席申請" class="btn btn-primary" />
+        </form>
 
-  <div class="card lefts">
-    <div class="card-body">
-      <h2 class="card-title">出席申請</h2>
-      <form action="/<%= @user.id %>" method="POST" />
-        <input type="submit" value="主席申請" class="btn btn-primary" />
-      </form>
+        <p class="card-text"><%= @today.year_at%>年<%= @today.month_at%>月<%= @today.day_at%>日：
+          <% if !@attendance.is_attendance%>
+            欠席</p>
+          <% end %>
+          <% if @attendance.is_attendance%>
+            出席</p>
+          <% end %>
 
-      <p class="card-text"><%= @time.year%>年<%= @time.month%>月<%= @time.day%>日：
-        <% if !@attendance.is_attendance%>
-          欠席</p>
-        <% end %>
-        <% if @attendance.is_attendance%>
-          出席</p>
-        <% end %>
-
-      <p class="card-text">合計出席回数：<%= @user.attendance_num%></p>
+        <p class="card-text">合計出席回数：<%= @user.attendance_num%></p>
+      </div>
     </div>
-  </div>
 
-  <div class="card lefts">
-    <div class="card-body">
-      <h2 class="card-title">詳細</h2>
-      <p class="card-text">メール：<%= @user.email%></p>
-      <p class="card-text">所属：<%= @user.belong.name %></p>
-      <form action="logout" method="POST">
-        <input type="hidden" name="id" value="<%= @user.id%>" />
-      <input class="btn btn-primary" type="submit" value="ログアウト" />
+    <div class="card lefts">
+      <div class="card-body">
+        <h2 class="card-title">詳細</h2>
+        <p class="card-text">メール：<%= @user.email%></p>
+        <p class="card-text">所属：<%= @user.belong.name %></p>
+        <form action="logout" method="POST">
+          <input type="hidden" name="id" value="<%= @user.id%>" />
+        <input class="btn btn-primary" type="submit" value="ログアウト" />
+      </div>
     </div>
-  </div>
 
-  <div class="card rights">
-    <div class="card-body">
-      <h2 class="card-title">欠席連絡</h2>
+    <div class="card rights">
+      <div class="card-body">
+        <h2 class="card-title">欠席連絡</h2>
+          <p class="card-text">
+            <a href="/<%= @user.id %>/absent" class="card-link text-primary">
+              新規作成
+            </a>
+          </p>
+          <p class="card-text">
+            <a href="/<%= @user.id %>/list" class="card-link text-primary">
+              一覧
+            </a>
+          </p>
+      </div>
+    </div>  
+
+    <div class="card rights">
+      <div class="card-body">
+        <h2 class="card-title">編集</h2>
         <p class="card-text">
-          <a href="/<%= @user.id %>/absent" class="card-link text-primary">
-            新規作成
+          <a href="/<%= @user.id %>/edit" class="card-link text-primary">
+            編集ページへ
           </a>
         </p>
-        <p class="card-text">
-          <a href="/<%= @user.id %>/list" class="card-link text-primary">
-            一覧
-          </a>
-        </p>
-    </div>
-  </div>  
-
-  <div class="card rights">
-    <div class="card-body">
-      <h2 class="card-title">編集</h2>
-      <p class="card-text">
-        <a href="/<%= @user.id %>/edit" class="card-link text-primary">
-          編集ページへ
-        </a>
-      </p>
+      </div>
     </div>
   </div>
-
 </div>

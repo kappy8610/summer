@@ -19,7 +19,7 @@ init = false
 get '/' do
   @title = "トップページ"
   @time = Time.new
-  if init then
+  if init
     today = Today.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
     day = Day.create!(month_at: @time.month, day_at: @time.day, year_at: @time.year)
     today.save
@@ -130,7 +130,7 @@ post '/table' do
     end
   end
 
-  redirect '/table'
+  redirect "/#{params[:update]}"
 end
 
 # 欠席連絡確認ページ
@@ -176,13 +176,14 @@ get '/users' do
   erb :users
 end
 
-# 各ユーザーの情報ページ
+# 各ユーザーの情報ページ-
 get '/:id' do
   @user = User.find(params[:id])
   @title = "ユーザー情報"
   if @user.password == @user.input_password then
     @time = Time.new
-    @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)
+    @today = Today.find(1)
+    @attendance = Attendance.find_by(user_id: @user.id, day_at: @today.day_at, month_at: @today.month_at, year_at: @today.year_at)
     erb :user
   else
     redirect '/users'
@@ -193,6 +194,7 @@ end
 post '/:id' do
   @title = "ユーザー情報"
   @time = Time.new
+  @today = Today.find(1)
   @user = User.find(params[:id])
   @user.attendance_num += 1
   @attendance = Attendance.find_by(user_id: @user.id, day_at: @time.day, month_at: @time.month, year_at: @time.year)

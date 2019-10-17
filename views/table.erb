@@ -9,6 +9,7 @@
   <input type="hidden" name="year_at" value="<%= @time.year%>" />
   <input type="hidden" name="month_at" value="<%= @time.month%>" />
   <input type="hidden" name="day_at" value="<%= @time.day %>" />
+  <input type="hidden" name="update" value="table" />
   <input class="btn btn-primary" type="submit" value="更新" />
 </form>
 
@@ -47,9 +48,9 @@
               <% attendance = Attendance.find_by(user_id:user.id, day_at: day.day_at) %>
               <% if attendance.month_at == @today.month_at && attendance.year_at == @today.year_at%>
                 <% if !attendance.is_attendance then%>
-                  欠席
+                  ✖
                 <% else %>
-                  出席
+                  〇
                 <% end %>
               <% end %>
             </td>
